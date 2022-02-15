@@ -1,0 +1,7 @@
+---
+- name: Rebooting
+  hosts: all
+  tasks:
+    - name: Reboot con espera
+      reboot:
+        reboot_timeout: 10

@@ -1,0 +1,102 @@
+---
+- hosts: all
+  tasks:
+  - name: Instala apache, utilidades, php7.3 y librerias requeridas
+    apt:
+      name: 
+        - apache2  
+        - libapache2-mod-fcgid
+        - php7.3
+        - php-fpm
+        - php7.3-opcache 
+        - php-cgi 
+        - libapache2-mod-security2 
+        - php-dev 
+        - php-pear 
+        - make 
+        - php-redis 
+        - php-gd 
+        - php-mbstring 
+        - php-curl 
+        - php-mysql 
+        - libapache2-mod-php 
+        - rsync
+        - curl 
+        - wget 
+        - nmap 
+        - redis 
+      state: present
+      update_cache: true
+
+  - name: Enable the Apache2 module rewrite
+    community.general.apache2_module:
+      state: present
+      name: rewrite
+
+  - name: Enable the Apache2 module proxy
+    community.general.apache2_module:
+      state: present
+      name: proxy
+
+  - name: Enable the Apache2 module proxy_http
+    community.general.apache2_module:
+      state: present
+      name: proxy_http
+
+  - name: Enable the Apache2 module proxy_fcgi
+    community.general.apache2_module:
+      state: present
+      name: proxy_fcgi
+
+  - name: Enable the Apache2 module fcgid
+    community.general.apache2_module:
+      state: present
+      name: fcgid
+
+  - name: Enable the Apache2 module ssl
+    community.general.apache2_module:
+      state: present
+      name: ssl
+
+  - name: Create a directory ARBA if it does not exist 
+    file:
+      path: /var/www/ARBA
+      state: directory
+      mode: '0755'
+  
+  - name: Copiando llaves ssl
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: root
+      group: root
+    with_items:
+      - { src: './asteriscotest2020.crt', dest: '/etc/ssl/private/asteriscotest2020.crt' }
+      - { src: './asteriscotest2020.key', dest: '/etc/ssl/private/asteriscotest2020.key' }
+      
+  - name: Copiando virtualhost
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: '755'
+      owner: www-data
+      group: www-data
+    with_items:
+      - { src: './drupadm.test.arba.gov.ar-ssl.conf', dest: '/etc/apache2/sites-available/drupadm.test.arba.gov.ar-ssl.conf' }
+      - { src: './drupadm.test.arba.gov.ar.conf', dest: '/etc/apache2/sites-available/drupadm.test.arba.gov.ar.conf' }
+
+  - name: a2ensite drupadm.test.arba.gov.ar-ssl.conf
+    command: a2ensite drupadm.test.arba.gov.ar-ssl.conf
+
+  - name: a2ensite drupadm.test.arba.gov.ar.conf
+    command: a2ensite drupadm.test.arba.gov.ar.conf
+
+  - name: Restart service php7.3-fpm
+    service:
+      name: php7.3-fpm
+      state: restarted
+  
+  - name: Restart service apache2
+    service:
+      name: apache2
+      state: restarted

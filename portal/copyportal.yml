@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Copia script portalcautivo
+      copy:
+        src: portalcautivo.sh
+        dest: /usr/local/bin/portalcautivo.sh
+        mode: '755'
+        owner: root
+        group: root

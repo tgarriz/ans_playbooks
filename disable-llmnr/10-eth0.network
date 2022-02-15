@@ -1,0 +1,8 @@
+[Match]
+Name=eth0
+
+[Network]
+LLMNR=no
+Address=10.16.74.67/26
+Gateway=10.16.1.254
+DNS=10.16.6.1 10.16.6.2

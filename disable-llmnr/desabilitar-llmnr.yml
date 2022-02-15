@@ -1,0 +1,28 @@
+- hosts: all 
+  tasks:
+  - name: mover el archivo interface para no perderlo
+    command: mv /etc/network/interfaces /etc/network/interfaces.orig
+
+  - name: Copiando archivos necesarios
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+      owner: root 
+      group: root
+    with_items:
+      - { src: './10-ens192.network',dest: '/etc/systemd/network/10-ens192.network', mode: '0755' }
+      - { src: './kill_llmnr',dest: '/usr/local/sbin/kill_llmnr', mode: '0755' }
+      - { src: './kill_llmnr.service',dest: '/etc/systemd/system/kill_llmnr.service', mode: '0575' }
+
+  - name: Executing a command using command module
+    shell: "{{ item.com }}"
+    register: command_result
+    with_items:
+      - { com: 'systemctl daemon-reload' }
+      - { com: 'systemctl start kill_llmnr.service' }
+      - { com: 'systemctl enable kill_llmnr.service' }
+
+  - name: Ansible shell register result
+    debug: msg="{{ command_result }}"
+

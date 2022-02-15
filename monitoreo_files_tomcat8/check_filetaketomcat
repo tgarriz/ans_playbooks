@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "<<<filetaketomcat>>>"
+
+lsof -p $(pidof java) | wc -l

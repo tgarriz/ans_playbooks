@@ -1,0 +1,25 @@
+---
+#El bindredis declarar la ip del front
+- hosts: all
+  vars:
+    bindredis: bind 127.0.0.1 ::1 ipdeladm
+    passredis: requirepass ClaveSegura
+
+  tasks:
+  
+  - replace:
+      path: /etc/redis/redis.conf
+      regexp: '^bind 127\.0\.0\.1 ::1$'
+      replace: "{{ bindredis }}"
+      backup: yes
+
+  - lineinfile:
+      path: /etc/redis/redis.conf
+      line: "{{ passredis }}"
+      insertafter: "{{ bindredis }}"
+
+  - name: Restart redis, con daemon-reload
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: redis

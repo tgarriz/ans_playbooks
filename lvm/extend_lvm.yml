@@ -1,0 +1,9 @@
+---
+- hosts: shapiro.arba.gov.ar 
+  tasks:
+    - name: Extend the logical volume in Mb.
+      community.general.lvol:
+        vg: debian-vg
+        lv: var
+        size: 80g
+        resizefs: yes

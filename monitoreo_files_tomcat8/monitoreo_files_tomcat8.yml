@@ -1,0 +1,29 @@
+- hosts: all
+  tasks:
+  - name: Crear Directorios
+    file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - /etc/systemd/system/tomcat8.service.d/
+
+  - name: Copiando archivos necesarios
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+      owner: root
+      group: root
+    with_items:
+      - { src: './check_filetaketomcat',dest: '/usr/lib/check_mk_agent/plugins/check_filetaketomcat', mode: '0755' }
+      - { src: './limits.conf',dest: '/etc/systemd/system/tomcat8.service.d/limits.conf', mode: '0755' }
+
+  - name: Executing a command using command module
+    shell: "{{ item.com }}"
+    register: command_result
+    with_items:
+      - { com: 'systemctl daemon-reload' }
+      - { com: 'systemctl restart tomcat8.service' }
+
+  - name: Ansible shell register result
+    debug: msg="{{ command_result }}"

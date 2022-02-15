@@ -1,0 +1,10 @@
+[Unit]
+Description=Levante IPv4 sin LLMNR
+After=syslog.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/sbin/kill_llmnr
+
+[Install]
+WantedBy=multi-user.target

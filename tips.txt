@@ -1,0 +1,7 @@
+ansible-playbook --limit 'servers_chat' -u juan.garriz --become-user juan.garriz --become-method='sudo' ansible-debug-os-debian.yml
+ansible -i lista all -u juan.garriz --become --ask-become-pass -m service -a "name=squid state=restarted"
+ansible-playbook -u tgarriz --become --ask-become-pass desabilitar-llmnr.yml 
+ansible mailer.arba.gov.ar -m shell -a 'systemd-resolve --status' -u juan.garriz --become --ask-become-pass
+ansible 10.16.147.88 -u tgarriz --ask-sudo-pass -m file -a "path=/tmp/estadisticas2.tar.gz state=absent"
+ansible servers_test_deb8 -u juan.garriz -become -m shell -a "if systemctl is-enabled apache2 | grep -q enable;   then echo true;   else echo false; fi;"
+ansible --list-hosts *test.arba.gov.ar

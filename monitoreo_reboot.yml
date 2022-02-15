@@ -1,0 +1,14 @@
+- hosts: all
+  tasks:
+  - name: Copiando archivos necesarios
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+      owner: root
+      group: root
+    with_items:
+      - { src: './check_reboot',dest: '/usr/lib/check_mk_agent/plugins/check_reboot', mode: '0755' }
+
+  - name: Ansible shell register result
+    debug: msg="{{ command_result }}"

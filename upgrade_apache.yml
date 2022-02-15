@@ -1,0 +1,56 @@
+---
+- hosts: all
+
+  handlers:
+    - name: restart apache2
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
+      listen: "restart web services"
+
+    - name: restart redis
+      ansible.builtin.service:
+        name: redis
+        state: restarted
+      listen: "restart web services"
+
+    - name: restart varnish
+      ansible.builtin.service:
+        name: varnish                             
+        state: restarted
+      listen: "restart web services"
+      listen: "restart cache service"
+
+    - name: restart varnishncsa
+      ansible.builtin.service:
+        name: varnishncsa
+        state: restarted
+      listen: "restart web services"
+      listen: "restart cache service"
+
+    - name: restart php-fpm
+      ansible.builtin.service:
+        name: php7.3-fpm
+        state: restarted
+      listen: "restart web services"
+
+  tasks:
+    - name: Actualiza apache2
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+      notify: "restart web services"
+
+    - name: Actualiza varnish
+      apt:
+        name: varnish
+        state: latest
+        update_cache: yes
+      notify: "restart cache services"
+
+
+
+
+
+

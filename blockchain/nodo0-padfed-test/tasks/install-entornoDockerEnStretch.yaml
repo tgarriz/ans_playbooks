@@ -1,0 +1,45 @@
+---
+- hosts:
+  become: true
+  tasks:
+    - name: install packages
+      apt: 
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - git
+        - gnupg2
+    
+    - name: add key docker
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg 
+        state: present
+
+    - name: add repo docker
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items:
+        - deb [arch=amd64] https://download.docker.com/linux/debian stretch stable 
+        - deb https://deb.nodesource.com/node_8.x stretch main 
+
+    - name: Update & Upgrade
+      apt:
+        upgrade: yes
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 86400
+
+    - name: install docker
+      apt: 
+        name: "{{item}}"
+        state: latest
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+     

@@ -1,0 +1,5 @@
+#!/bin/bash
+#Script destinado a levantar Interfas de red sin llmnr
+
+systemctl restart systemd-networkd
+systemctl restart networking.service

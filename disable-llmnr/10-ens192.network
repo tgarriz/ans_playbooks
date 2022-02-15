@@ -1,0 +1,8 @@
+[Match]
+Name=ens192
+
+[Network]
+LLMNR=no
+Address=10.16.6.18/25
+Gateway=10.16.6.126
+DNS=10.16.6.1 10.16.6.2
