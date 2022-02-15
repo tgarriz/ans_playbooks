@@ -1,0 +1,9 @@
+---
+# handlers file for role_addmemcpu-linux
+- name: revisar memoria
+  command: cat /proc/meminfo
+  register: memoria
+
+- name: revisar memoria
+  debug:
+    msg: "{{ memoria }}"

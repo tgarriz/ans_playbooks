@@ -1,0 +1,35 @@
+---
+  #Setear el settings.php con la url correspondiente y desabilitar modulo redis antes de empezar
+- hosts: all
+  tasks:
+    - name: copia configuracion y servicio
+      copy:
+        src: "{{ item.src }}" 
+        dest: "{{ item.dest }}" 
+        mode: "{{ item.mode }}"
+        owner: www-data 
+        group: www-data
+      with_items:
+        - { src: './settings.php',dest: '/var/www/ARBA/sites/default/settings.php', mode: '0744' }
+
+
+#Actualmente estos modulos vienen con el git clone desde el repositorio de arba    
+  #  - name: Download modulo redis
+  ##    get_url:
+  #      url: https://ftp.drupal.org/files/projects/redis-7.x-3.18.tar.gz
+  #      dest: /var/www/ARBA/profiles/arba/modules/contrib/redis-7.x-3.18.tar.gz
+#
+  #  - name: Download modulo entity cache
+  #    get_url:
+  #      url: https://ftp.drupal.org/files/projects/entitycache-7.x-1.5.tar.gz
+  #      dest: /var/www/ARBA/profiles/arba/modules/contrib/entitycache-7.x-1.5.tar.gz
+#
+  #  - name: Extract redis
+  #    unarchive:
+  #      src: /var/www/ARBA/profiles/arba/modules/contrib/redis-7.x-3.18.tar.gz
+  #      dest: /var/www/ARBA/profiles/arba/modules/contrib/redis
+#
+  #  - name: Extract entity
+  #    unarchive:
+  #      src: /var/www/ARBA/profiles/arba/modules/contrib/entitycache-7.x-1.5.tar.gz
+  #      dest: /var/www/ARBA/profiles/arba/modules/contrib/entitycache

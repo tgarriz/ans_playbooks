@@ -1,0 +1,26 @@
+#!/bin/sh
+echo '<<<unattended>>>'
+dia=`date +%F`
+diauno=`date +%F -d '-1 day'`
+diados=`date +%F -d '-2 day'`
+diatres=`date +%F -d '-3 day'`
+
+result=`zgrep -e $dia -e $diauno -e $diados -e $diatres /var/log/unattended-upgrades/unattended-upgrades.log /var/log/unattended-upgrades/unattended-upgrades.log.1.gz | grep -e "Starting unattended upgrades script" -e "Iniciando guión de actualizaciones desatendidas" -e "Iniciando script de unattended-upgrades" | wc -l`
+
+errores=`grep -e $diauno /var/log/unattended-upgrades/unattended-upgrades.log | grep " ERROR " | wc -l`
+if [ $errores -ne 0 ];
+then
+    # CRITICAL
+    echo 3
+    exit
+fi
+
+if [ $result -ge 1 ];
+then
+    # OK
+    echo 0
+else
+    # WARNING
+    echo 2
+fi
+

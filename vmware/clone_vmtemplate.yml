@@ -1,0 +1,40 @@
+---
+- name: Crear un linux debian
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  hosts: localhost
+  tasks:
+
+    - name:  Clone a virtual machine from Linux template and customize
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: False
+        state: present
+        folder: /Testing
+        template: ubuntu-Focal-20.04LTS-Template
+        name: vm-ifnra-qa2-worker1
+        cluster: ClusterNSX
+        #No anda para Debian
+        hardware:
+          memory_mb: 8192
+          num_cpus: 4 
+        networks:
+          - name: vxw-dvs-14596-virtualwire-20-sid-5018-LDS-D-440-POC
+            ip: 10.16.44.132
+            gateway: 10.16.44.254
+            netmask: 255.255.255.0
+        wait_for_ip_address: True
+        customization:
+          domain: arba.gov.ar
+          hostname: infraqa2-w1
+          dns_servers:
+            - 10.16.6.1
+            - 10.16.6.2
+#          dns_suffix:
+#            - example.com
+#            - example2.com
+      delegate_to: localhost

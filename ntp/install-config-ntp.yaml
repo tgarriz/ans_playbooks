@@ -1,0 +1,40 @@
+---
+- hosts: all 
+  tasks:
+  
+  - name: elimina localtime
+    ansible.builtin.file:
+      path: /etc/localtime
+      state: absent
+  
+  - name: establecer zona horaria Buenos_Aires
+    ansible.builtin.file:
+      src: /usr/share/zoneinfo/America/Buenos_Aires
+      dest: /etc/localtime
+      state: link
+    
+  - name: install ntp ntpdate
+    apt:
+      name:
+        - ntp
+        - ntpdate
+      state: latest
+      update_cache: yes
+
+  - name: insertar ntp.arba.gov.ar en ntp.conf
+    ansible.builtin.lineinfile:
+      path: /etc/ntp.conf
+      insertbefore: 'pool 0.ubuntu.pool.ntp.org iburst'
+      line: 'pool ntp.arba.gov.ar prefer'
+  
+  - name: reiniciar ntp.service
+    service:
+      name: ntp.service
+      state: restarted
+    register: ntpservice
+  
+  - name: debug restart ntp.service
+    ansible.builtin.debug:
+      var: ntpservice
+      verbosity: 2
+  

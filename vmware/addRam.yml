@@ -1,0 +1,14 @@
+---
+- name: Gather all datacenters for vCenter
+  gather_facts: no
+  hosts: localhost
+  tasks:
+
+    - name: Incrementa memoria
+      vmware.vmware_rest.vcenter_vm_hardware_memory:
+        vcenter_hostname: vcenter508.arba.gov.ar
+        vcenter_username: juan.garriz@arba.gov.ar
+        vcenter_password: Calituga1977
+        vcenter_validate_certs: no
+        vm: 'vm-228468'
+        size_MiB: 1080

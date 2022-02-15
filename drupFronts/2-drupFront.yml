@@ -1,0 +1,100 @@
+---
+- hosts: all
+  tasks:
+  - name: Instala apache, utilidades, php7.3 y librerias requeridas
+    apt:
+      name: 
+        - apache2  
+        - libapache2-mod-fcgid
+        - php7.3
+        - php-fpm
+        - php7.3-opcache 
+        - php-cgi 
+        - libapache2-mod-security2 
+        - php-dev 
+        - php-pear 
+        - make 
+        - php-redis 
+        - php-gd 
+        - php-mbstring 
+        - php-curl 
+        - php-mysql 
+        - libapache2-mod-php 
+        - rsync
+        - curl 
+        - wget 
+        - nmap 
+        - redis 
+        - varnish
+      state: present
+      update_cache: true
+
+  - name: Enable the Apache2 module rewrite
+    community.general.apache2_module:
+      state: present
+      name: rewrite
+
+  - name: Enable the Apache2 module proxy
+    community.general.apache2_module:
+      state: present
+      name: proxy
+
+  - name: Enable the Apache2 module proxy_http
+    community.general.apache2_module:
+      state: present
+      name: proxy_http
+
+  - name: Enable the Apache2 module proxy_fcgi
+    community.general.apache2_module:
+      state: present
+      name: proxy_fcgi
+
+  - name: Enable the Apache2 module fcgid
+    community.general.apache2_module:
+      state: present
+      name: fcgid
+
+  - replace:
+      path: /etc/apache2/ports.conf
+      regexp: '^Listen 80$'
+      replace: 'Listen 8080'
+      backup: yes
+
+  - replace:
+        path: /etc/php/7.3/fpm/pool.d/www.conf
+        regexp: '^pm = dynamic$'
+        replace: 'pm = static'
+        backup: yes
+
+  - replace:
+        path: /etc/php/7.3/fpm/pool.d/www.conf
+        regexp: '^pm.max_children = 5$'
+        replace: 'pm.max_children = 200'
+        backup: yes
+
+  - name: Create a directory ARBA if it does not exist 
+    file:
+      path: /var/www/ARBA
+      state: directory
+      mode: '0755'
+    
+  - name: Copiando virtualhost
+    copy:
+      src: drupfront03.test.arba.gov.ar.conf
+      dest: /etc/apache2/sites-available/drupfront03.test.arba.gov.ar.conf
+      mode: '755'
+      owner: www-data
+      group: www-data
+
+  - name: a2ensite drupfront03.test.arba.gov.ar.conf
+    command: a2ensite drupfront03.test.arba.gov.ar.conf
+
+  - name: Restart service php7.3-fpm
+    service:
+      name: php7.3-fpm
+      state: restarted
+  
+  - name: Restart service apache2
+    service:
+      name: apache2
+      state: restarted

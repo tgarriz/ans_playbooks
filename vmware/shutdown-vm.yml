@@ -1,0 +1,15 @@
+- name: VMWare tasks
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  tasks:
+    - name: ForcePoweroff 
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vmname }}"
+        validate_certs: False
+        state: powered-off

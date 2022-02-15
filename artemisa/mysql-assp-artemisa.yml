@@ -1,0 +1,121 @@
+---
+hosts: 10.16.17.50
+  synchronize: comando Synchronize assp
+    src= /opt/assp 
+    dest= /mnt/volume1
+
+  synchronize: rsync mysql
+    src= /var/lib/mysql
+    dest= /datos
+
+  file: crea carpeta logs del mysql
+  path: /datos/mysql/log
+  state: directory
+
+  file: aplica permisos
+  path: /datos/mysql
+  owner: mysql
+  group: mysql
+  recurse: yes
+  state: directory
+  mode: 0755
+       
+     shell: "{{ item.com }}"
+     register: command_result
+     with_items:
+       - { com: 'systemctl stop assp.service' }
+       - { com: 'systemctl stop mysql.service' }
+
+     synchronize:  resincronizando assp
+       src= /opt/assp
+       dest= /mnt/volume1
+
+     synchronize:  resincronizando mysql
+       src= /var/lib/mysql
+       dest= /datos
+       
+     synchronize: sincronisando clamav
+       src= /opt/clamav
+       dest= /mnt/volume1
+       
+     synchronize:  sincronizando COPY
+       src= /opt/COPY
+       dest= /mnt/volume1
+       
+     file: mueve los logs del mysql
+     path: /datos/mysql/log
+     state: directory
+
+     file: aplica permisos
+     path: /datos/mysql
+     owner: mysql
+     group: mysql
+     recurse: yes
+     state: directory
+     mode: 0755
+   
+     name: mover el archivo para no perderlo
+     command: mv /etc/apparmor.d/usr.sbin.mysqld /root/usr.sbin.mysqld.orig
+
+     name: mover el archivo para no perderlo
+     command: mv /etc/mysql/mysql.conf.d/mysqld.cnf /root/mysqld.cnf.orig
+
+     name: Copiando archivos necesarios
+     copy:
+     src: "{{ item.src }}"
+     dest: "{{ item.dest }}"
+     mode: "{{ item.mode }}"
+     owner: root 
+     group: root
+     with_items:
+       - { src: './usr.sbin.mysqld',dest: '/etc/apparmor.d/usr.sbin.mysqld', mode: '0755' }
+       - { src: './mysqld.cnf',dest: '/etc/mysql/mysql.conf.d/mysqld.cnf', mode: '0755' }
+
+     name: parsear apparmor
+     command: apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld
+
+     file: Remover los dir deslinkeados
+     path: "{{ item }}"
+     state: absent
+     with_items:
+       - /var/lib/mysql
+       - /opt/assp
+
+     name: Desmontando volume1
+    # command: umount /mnt/volume1
+     mount:
+     path: /mnt/volume1
+     state: absent
+
+     name: Desmontando datos
+     #command: umount /datos
+     mount:
+     path: /datos
+     state: unmounted
+
+     name: mount datos y agrego al fstab
+     mount:
+     path: /datos
+     src: /dev/mapper/vg--mysql-vl--mysql
+     fstype: ext4
+     state: present
+
+     name: mount datos y agrego al fstab
+     mount:
+     path: /opt/assp
+     src: /dev/mapper/vg--assp-vl--assp
+     fstype: ext4
+     state: present
+
+     name: Remontar fstab
+     command: mount -av
+
+     name: Ejecutando Start de ASSP y Mysql
+     shell: "{{ item.com }}"
+     register: command_result
+     with_items:
+       - { com: 'systemctl start assp.service' }
+       - { com: 'systemctl start mysql.service' }
+   
+     name: Ansible shell register result
+     debug: msg="{{ command_result }}"

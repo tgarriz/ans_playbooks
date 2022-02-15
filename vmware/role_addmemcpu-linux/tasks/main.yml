@@ -1,0 +1,14 @@
+---
+# tasks file for role_addmemcpu-linux
+- name: Copiando script Hotadd
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  with_items:
+    - { src: 'hotadd.sh', dest: '/tmp/hotadd.sh' }
+
+- name: Corre script
+  command: bash /tmp/hotadd.sh
+  notify: revisar memoria

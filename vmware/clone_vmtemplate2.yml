@@ -1,0 +1,35 @@
+---
+- name: Crear un linux debian
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  hosts: localhost
+  tasks:
+
+    - name:  Clone a virtual machine from Linux template and customize
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: False
+        state: present
+        folder: /Testing
+        template: Debian-Buster(10)-Template-64-PAM-LVM
+        name: busterDeployed.t
+        cluster: ClusterNSX
+        #No anda para Debian
+        networks:
+          - name: vxw-dvs-14596-virtualwire-10-sid-5008-LDS-T-170-WebTesting
+            ip: 10.16.17.208
+            netmask: 255.255.255.0
+        wait_for_ip_address: True
+        customization:
+          domain: test.arba.gov.ar
+          dns_servers:
+            - 10.16.6.1
+            - 10.16.6.2
+          dns_suffix:
+            - test.arba.gov.ar
+#            - example2.com
+      delegate_to: localhost

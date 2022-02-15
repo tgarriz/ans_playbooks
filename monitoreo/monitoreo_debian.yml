@@ -1,0 +1,26 @@
+- hosts: 10.16.6.18
+  tasks:
+  - name: Remover check_reboot y unattended
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - /usr/lib/check_mk_agent/plugins/check_reboot
+      - /usr/lib/check_mk_agent/plugins/unattended
+
+  - name: Copiando archivos necesarios
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+      owner: root
+      group: root
+    with_items:
+      - { src: './check_reboot',dest: '/usr/lib/check_mk_agent/plugins/check_reboot', mode: '0755' }
+      - { src: './unattended',dest: '/usr/lib/check_mk_agent/plugins/unattended', mode: '0755' }
+      - { src: './20auto-upgrades',dest: '/etc/apt/apt.conf.d/20auto-upgrades', mode: '0755' }
+      - { src: './50unattended-upgrades',dest: '/etc/apt/apt.conf.d/50unattended-upgrades', mode: '0755' }
+      - { src: './distro_new',dest: '/usr/lib/check_mk_agent/plugin/', mode: '0755' }
+      - { src: './portalcautivo.sh',dest: '/usr/local/bin/portalcautivo.sh', mode: '0755' }
+
+

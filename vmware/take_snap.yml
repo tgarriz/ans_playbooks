@@ -1,0 +1,21 @@
+---
+- name: Tomar Snapchot
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  hosts: localhost
+  tasks:
+
+    - name: Create a snapshot
+      community.vmware.vmware_guest_snapshot:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: False
+        folder: "/{{ datacenter_name }}/vm/"
+        name: openDB02.t
+        state: present
+        snapshot_name: snap01
+        description: Antes de agrandar volumen
+      delegate_to: localhost

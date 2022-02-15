@@ -1,0 +1,19 @@
+---
+- name: Borra todas las snaps de una vm
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  hosts: localhost
+  tasks:
+
+    - name: Borrar Snaps
+      community.vmware.vmware_guest_snapshot:
+        hostname: "{{ vcenter_ip }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: False
+        folder: "/{{ datacenter_name }}/vm/"
+        name: ansiblem.t
+        state: remove_all
+      delegate_to: localhost

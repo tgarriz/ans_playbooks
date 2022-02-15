@@ -1,0 +1,16 @@
+echo "- - -" > /sys/class/scsi_host/host0/scan
+echo "- - -" > /sys/class/scsi_host/host1/scan
+echo "- - -" > /sys/class/scsi_host/host2/scan
+
+pvcreate /dev/sdb
+pvcreate /dev/sdc
+
+vgcreate vg-assp /dev/sdb
+vgcreate vg-mysql /dev/sdc
+
+lvcreate -n vl-assp -L 100g vg-assp
+lvcreate -n vl-mysql -L 100g vg-mysql
+
+mkfs -t ext4 /dev/mapper/vg--assp-vl--assp
+mkfs -t ext4 /dev/mapper/vg--mysql-vl--mysql
+

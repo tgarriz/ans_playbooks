@@ -1,0 +1,19 @@
+---
+- name: Incrementa memoria en linux
+  hosts: 10.16.17.181
+  become: true
+  gather_facts: no
+
+  pre_tasks:
+    - debug:
+        msg: 'Empezando con la conf.'
+
+  roles:
+    - role: role_addmemcpu-linux
+      vars:
+        vm: nbk.ansiblen01.t
+        mem: 1000
+
+  post_tasks:
+    - debug:
+        msg: 'Termino la conf. Revisa '

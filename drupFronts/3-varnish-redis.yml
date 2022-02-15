@@ -1,0 +1,47 @@
+---
+#El bindredis declarar la ip del front
+- hosts: all
+  vars:
+    bindredis: bind 127.0.0.1 ::1 10.16.17.111
+    passredis: requirepass ClaveSegura
+
+  tasks:
+  - name: Instala y configura varnish y redis
+    apt:
+      name:
+      - varnish
+      - redis
+
+  - name: copia configuracion y servicio
+    copy:
+      src: "{{ item.src }}" 
+      dest: "{{ item.dest }}" 
+      mode: "{{ item.mode }}"
+      owner: root 
+      group: root
+    with_items:
+      - { src: './default.vcl',dest: '/etc/varnish/default.vcl', mode: '0755' }
+      - { src: './varnish.service',dest: '/usr/lib/systemd/system/varnish.service', mode: '0755' }
+  
+  - replace:
+      path: /etc/redis/redis.conf
+      regexp: '^bind 127\.0\.0\.1 ::1$'
+      replace: "{{ bindredis }}"
+      backup: yes
+
+  - lineinfile:
+      path: /etc/redis/redis.conf
+      line: "{{ passredis }}"
+      insertafter: "{{ bindredis }}"
+
+  - name: Restart varnish, con daemon-reload
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: varnish
+
+  - name: Restart redis, con daemon-reload
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: redis

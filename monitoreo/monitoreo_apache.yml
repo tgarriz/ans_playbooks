@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+  - name: Copiando archivos necesarios
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+      owner: root
+      group: root
+    with_items:
+      - { src: './apache_status.cfg',dest: '/etc/check_mk/apache_status.cfg', mode: '0444' }
+      - { src: './apache_status',dest: '/usr/lib/check_mk_agent/plugins/apache_status', mode: '0755' }
+

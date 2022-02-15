@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  gather_facts: no
+  tasks:
+  - name: ver secure repo
+    lineinfile:
+      path: /etc/apt/sources.list
+      regexp: '^deb http://debmirror.arba.gov.ar/stretch_secure'
+      insertbefore: 'deb http://debmirror.arba.gov.ar/stretch stretch main contrib non-free'
+      line: 'deb http://debmirror.arba.gov.ar/stretch_secure stretch/updates main contrib'
+

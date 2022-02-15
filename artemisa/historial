@@ -1,0 +1,229 @@
+ 1758  vim /etc/mysql/my.cnf
+ 1759  vim /etc/mysql/mysql.c
+ 1760  vim /etc/mysql/mysql.conf.d/mysqld.cnf 
+ 1761  systemctl restart mysql
+ 1762  systemctl status mysql
+ 1763  cd /etc/
+ 1764  ls
+ 1765  cd /var/log/
+ 1766  ls
+ 1767  cd /opt/assp/logs
+ 1768  tail -f  maillog.txt | grep spam
+ 1769  tail -f  maillog.txt
+ 1770  mysql -u assp -p -D assp -e "select count(*) from hhmdb;"
+ 1771  mysql -u assp -p -D assp -e "select count(*) from hmmdb;"
+ 1772  cd /etc/mysql/mysql.conf.d/
+ 1773  ls
+ 1774  vim mysqld.cnf
+ 1775  exit
+ 1776  |
+ 1777  df -h
+ 1778  vgs
+ 1779  lvs
+ 1780  cat /etc/fstab 
+ 1781  fdisk 
+ 1782  cfdisk 
+ 1783  top
+ 1784  tail -f /opt/assp/logs/maillog.txt  | grep "\[spam found\]"
+ 1785  tail -f /opt/assp/logs/maillog.txt  
+ 1786  cd  /opt/assp/logs/
+ 1787  ls -lh
+ 1788  mc
+ 1789  dpkg -i check-mk-agent_1.2.8p23-1_all.deb 
+ 1790  apt install xinetd
+ 1791  aptitude search nagios
+ 1792  apt install aptitude
+ 1793  aptitude search nagios
+ 1794  apt download nagios-nrpe-plugin
+ 1795  aptitude download nagios-nrpe-plugin
+ 1796  apt download nagios-nrpe-plugin'
+ 1797  apt download nagios-nrpe-plugin
+ 1798  apt download nagios-plugins
+ 1799  apt download nagios-plugins-common
+ 1800  ./check_tcp 
+ 1801  ./check_ntp
+ 1802  aptitude search check_tcp
+ 1803  wget https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+ 1804  ./configure 
+ 1805  make
+ 1806  make install
+ 1807  ./check_tcp 
+ 1808  updatedb
+ 1809  locate clamd.ctl
+ 1810  cat /etc/check_mk/mrpe.cfg 
+ 1811  /usr/lib/nagios/plugins/check_tcp -H 10.16.6.22 -p 825
+ 1812  /usr/lib/nagios/libexec/check_tcp -H 10.16.6.22 -p 825
+ 1813  /usr/local/nagios/libexec/check_tcp -H 127.0.0.1 -p 825
+ 1814  /usr/local/nagios/libexec/check_tcp -H 10.16.6.22 -p 825
+ 1815  /usr/local/nagios/libexec/check_tcp/usr/local/nagios/libexec/check_clamd
+ 1816  /usr/local/nagios/libexec/check_clamd
+ 1817  ./mk_mysql
+ 1818  tail -f  /opt/assp/logs/maillog.txt | grep spam
+ 1819  tail -f  /opt/assp/logs/maillog.txt 
+ 1820  df -h
+ 1821  tail -f  /opt/assp/logs/maillog.txt 
+ 1822  cfdisk 
+ 1823  tail -f  /opt/assp/logs/maillog.txt 
+ 1824  df -h
+ 1825  exit
+ 1826  top
+ 1827  tail -f /opt/assp/logs/maillog.txt 
+ 1828  df -h
+ 1829  exit
+ 1830  df -h
+ 1831  top
+ 1832  exit
+ 1833  df -h
+ 1834  xit
+ 1835  exit
+ 1836  vim /etc/network/interfaces
+ 1837  cat /etc/network/interfaces
+ 1838  ifdown ens160
+ 1839  reboot
+ 1840  ip a
+ 1841  hostnamectl set-hostname artmisa.cl
+ 1842  exit
+ 1843  reboot
+ 1844  vim /etc/hostname
+ 1845  echo "- - -" > /sys/class/scsi_host/host0/scan
+ 1846  echo "- - -" > /sys/class/scsi_host/host1/scan
+ 1847  echo "- - -" > /sys/class/scsi_host/host2/scan
+ 1848  ls /dev/sd*
+ 1849  apt-get install lvm2
+ 1850  apt-get install system-config-lvm
+ 1851  pvcreate /dev/sdb
+ 1852  pvd
+ 1853  pvi
+ 1854  pvs
+ 1855  vgcreate vol-assp /dev/sdb
+ 1856  vgs
+ 1857  ls
+ 1858  lvcreate -n lv-assp -L 5g vol-assp
+ 1859  lvs
+ 1860  mkdir /mnt/volumen1
+ 1861  mount /dev/vol-assp/lv-assp /mnt/volumen1/
+ 1862  mkfs -t ext4 /dev/mapper/vol--assp-lv--assp 
+ 1863  mount /dev/mapper/vol--assp-lv--assp /mnt/volumen1/
+ 1864  df -h
+ 1865  rsync --dry-run -zvh /opt/assp /mnt/volumen1/
+ 1866  rsync --dry-run -zvh /opt/assp/* /mnt/volumen1/
+ 1867  rsync -zvh /opt/assp/* /mnt/volumen1/
+ 1868  cd /mnt/volumen1/
+ 1869  ls
+ 1870  ls -lsh | wc -l
+ 1871  ls -lsh /opt/assp | wc -l
+ 1872  ls -lsh | wc -l
+ 1873  ls --color
+ 1874  rm *
+ 1875  ls
+ 1876  ls -lsh /opt/assp
+ 1877  rsync -azvh /opt/assp/* /mnt/volumen1/
+ 1878  ls
+ 1879  rm -r *
+ 1880  ls
+ 1881  lvresize -L +5G /dev/vol-assp/lv-assp 
+ 1882  lvresize -L +4.5G /dev/vol-assp/lv-assp 
+ 1883  lvresize -L +400M /dev/vol-assp/lv-assp 
+ 1884  resize2fs /dev/mapper/vol--assp-lv--assp 
+ 1885  rsync -azvh /opt/assp/* /mnt/volumen1/
+ 1886  ls -lsh
+ 1887  ls -lsh | wc -l
+ 1888  systemctl status assp
+ 1889  vim /etc/fstab 
+ 1890  du -h /opt/assp
+ 1891  ls
+ 1892  echo "- - -" > /sys/class/scsi_host/host0/scan
+ 1893  echo "- - -" > /sys/class/scsi_host/host1/scan
+ 1894  echo "- - -" > /sys/class/scsi_host/host2/scan
+ 1895  ls /dev/sd
+ 1896  ls /dev/sd*
+ 1897  pvcreate /dev/sdc
+ 1898  vgcreate vol-g-mysql /dev/sdc
+ 1899  vgs
+ 1900  lvs
+ 1901  lvcreate -n lv-mysql -L 10g vol-g-mysql
+ 1902  mkfs -t ext4 /dev/mapper/vol--g--mysql-lv--mysql 
+ 1903  vim /etc/mysql/my.cnf
+ 1904  vim /etc/mysql/mysql.cnf 
+ 1905  vim /etc/mysql/
+ 1906  mkdir datos
+ 1907  ls
+ 1908  rm -r datos/
+ 1909  mkdir /datos
+ 1910  mount /datos /dev/mapper/vol--g--mysql-lv--mysql
+ 1911  mount /dev/mapper/vol--g--mysql-lv--mysql /datos
+ 1912  ls /mnt/volumen1/
+ 1913  history | grep rsync
+ 1914  cat /etc/mysql/conf.d/mysql.cnf 
+ 1915  vim /etc/mysql/mysql.conf.d/mysqld.cnf 
+ 1916  history | grep rsync
+ 1917  rsync --dry-run /var/lib/mysql /datos/
+ 1918  rsync --dry-run -azvh /var/lib/mysql /datos/
+ 1919  rsync -azvh /var/lib/mysql /datos/
+ 1920  systemctl stop assp
+ 1921  systemctl stop mysql.service 
+ 1922  ls /datos/mysql/
+ 1923  vim /etc/mysql/mysql.conf.d/mysqld.cnf 
+ 1924  cat /etc/fstab 
+ 1925  vim /etc/fstab 
+ 1926  reboot
+ 1927  systemctl status mysql
+ 1928  cd /etc/mysql
+ 1929  ls
+ 1930  grep -ri /usr/lib/mysql
+ 1931  ls /datos/
+ 1932  ls -lsh /datos/
+ 1933  systemctl status assp
+ 1934  ls
+ 1935  grep -ri datadir ./
+ 1936  ls /
+ 1937  journalctl -xe
+ 1938  systemctl start mysql
+ 1939  vim /var/log/mysql/error.log
+ 1940  ls -lsh /datos/mysql/
+ 1941  chown -R mysql:. /datos/mysql/
+ 1942  chown -R mysql:mysql /datos/mysql/
+ 1943  systemctl start mysql
+ 1944  journalctl -xe
+ 1945  cd /etc/apparmor
+ 1946  ls
+ 1947  grep -ri mysql
+ 1948  cd ..
+ 1949  cd apparmor.d/
+ 1950  grep -ri mysql
+ 1951  vim usr.sbin.mysqld
+ 1952  apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld
+ 1953  systemctl start mysql
+ 1954  nmap localhost
+ 1955  nmap localhost -p 55555
+ 1956  ip a
+ 1957  nmap 10.16.17.50
+ 1958  vim /etc/apparmor.d/usr.sbin.mysqld
+ 1959  systemctl stop mysql
+ 1960  vim /etc/apparmor.d/usr.sbin.mysqld
+ 1961  vim /etc/mysql/
+ 1962  cd /etc/mysql/
+ 1963  ls
+ 1964  rm ystemctl\ start\ mysql 
+ 1965  ls
+ 1966  grep -ri '/var/log'
+ 1967  ls /var/log/mysql/
+ 1968  vim /etc/apparmor.d/usr.sbin.mysqld
+ 1969  systemctl restart mysql.service 
+ 1970  journalctl -xe
+ 1971  apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld
+ 1972  systemctl restart mysql.service 
+ 1973  journalctl -xe
+ 1974  cd /datos/mysql/
+ 1975  mkdir log
+ 1976  ls -lsh
+ 1977  ls mysql
+ 1978  ls
+ 1979  chown -R mysql:mysql log/
+ 1980  systemctl restart mysql.service 
+ 1981  exit
+ 1982  df -h
+ 1983  vgs
+ 1984  pvs
+ 1985  lvs
+ 1986  history 

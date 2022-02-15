@@ -1,0 +1,20 @@
+---
+- name: Listar Templates
+  gather_facts: no
+  vars_files:
+    - vcenter_vars.yml
+  hosts: localhost
+  tasks:
+
+    - name: Gather only registered virtual machine templates
+      community.vmware.vmware_vm_info:
+        hostname: '{{ vcenter_ip }}'
+        username: '{{ vcenter_user }}'
+        password: '{{ vcenter_password }}'
+        validate_certs: False
+        vm_type: template
+      delegate_to: localhost
+      register: template_info
+    
+    - debug:
+        var: template_info.virtual_machines
