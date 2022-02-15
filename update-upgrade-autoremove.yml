@@ -1,0 +1,19 @@
+---
+- hosts: 10.16.44.139 
+  become: true
+  become_user: root
+  tasks:
+    - name: Update apt repo and cache on all Debian/Ubuntu boxes
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: Upgrade all packages on servers
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: Remove dependencies that are no longer required
+      apt: autoremove=yes
+
+    - name: reboot node
+      shell: sleep 2 && shutdown -r now "Reboot triggered by ansible"
+      async: 1
+      poll: 0
+      ignore_errors: true

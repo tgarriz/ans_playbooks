@@ -1,0 +1,7 @@
+---
+- hosts: 10.16.17.181 
+  become: true
+  tasks:
+    - name: install python3-apt
+      apt: name=python3-apt update_cache=yes state=present 
+

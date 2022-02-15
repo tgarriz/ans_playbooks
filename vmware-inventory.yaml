@@ -1,0 +1,7 @@
+plugin: vmware_vm_inventory
+strict: False
+hostname: vcenter508.arba.gov.ar
+username: juan.garriz@arba.gov.ar
+password: Anes95078
+validate_certs: False
+with_tags: True

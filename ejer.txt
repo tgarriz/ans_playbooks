@@ -1,0 +1,28 @@
+Instalamos y configuramos nuestro usuario en el nodo admin
+
+1_ sudo apt-add-repository --yes --update ppa:ansible/ansible
+2_ sudo apt install ansible
+3_ sudo apt install python3-argcomplete
+4_ sudo activate-global-python-argcomplete3
+5_ ssh-keygen –t rsa
+6_ ssh-copy-id tuuser@sistemaadministrado.test.arba.gov.ar
+7_ editar /etc/ansible/hosts y agregar el server
+8_ crear el playbook
+----------------instalar apache------------------------------
+---
+- hosts: apache
+  sudo: yes
+  tasks:
+    - name: install apache2
+      apt: name=apache2 update_cache=yes state=latest
+
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
+-------------------------------------------------------------
+9_ ansible-playbook apache.yml --ask-sudo-pass

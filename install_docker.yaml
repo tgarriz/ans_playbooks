@@ -1,0 +1,13 @@
+---
+- hosts: all 
+  tasks:
+    - name: Download docker installer
+      get_url: 
+        url: https://releases.rancher.com/install-docker/20.10.sh 
+        dest: /tmp/docker-installer.sh
+        mode: '0777'
+
+    - name: Execute the docker-installer.sh
+      ansible.builtin.shell: /tmp/docker-installer.sh
+
+ 
